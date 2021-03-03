@@ -1,0 +1,69 @@
+specVersion: 0.0.2
+description: Liquefy Assignment API
+repository: https://github.com/jer39/liquefy-demo-subgraph
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: LnProxyERC20
+    network: mainnet
+    source:
+      address: "0x3E9BC21C9b189C09dF3eF1B824798658d5011937"
+      abi: LnProxyERC20
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mapping.ts
+      entities:
+        - Transfer
+        - TransferFrom
+      abis:
+        - name: LnProxyERC20
+          file: ../abis/LnProxyERC20.json
+      callHandlers:
+        - function: transferFrom(address,address,uint256)
+          handler: handleTransferFrom
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransfer
+
+  - kind: ethereum/contract
+    name: Bnb
+    network: mainnet
+    source:
+      address: "0xB8c77482e45F1F44dE1745F52C74426C631bDD52"
+      abi: Bnb
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mapping.ts
+      entities:
+        - TransferBnb
+      abis:
+        - name: Bnb
+          file: ../abis/Bnb.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256)
+          handler: handleTransferBnb
+
+  - kind: ethereum/contract
+    name: Link
+    network: mainnet
+    source:
+      address: "0x514910771AF9Ca656af840dff83E8264EcF986CA"
+      abi: Link
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.4
+      language: wasm/assemblyscript
+      file: ../src/mapping.ts
+      entities:
+        - Transfer
+      abis:
+        - name: Link
+          file: ../abis/Link.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,uint256,bytes)
+          handler: handleTransferLink
