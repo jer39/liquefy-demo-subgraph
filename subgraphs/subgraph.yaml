@@ -60,7 +60,7 @@ dataSources:
       language: wasm/assemblyscript
       file: ../src/mapping.ts
       entities:
-        - Transfer
+        - TransferLink
       abis:
         - name: Link
           file: ../abis/Link.json
